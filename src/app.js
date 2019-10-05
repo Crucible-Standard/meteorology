@@ -1,8 +1,10 @@
-const logger = require('server-side-tools').logger;
-const format = require('server-side-tools').format;
+const bodyParser = require('body-parser');
 const express = require('express');
 const helmet = require('helmet');
-const bodyParser = require('body-parser');
+const logger = require('server-side-tools').logger;
+const format = require('server-side-tools').format;
+const { kelvinToFahrenheit } = require('server-side-tools').convert;
+const request = require('superagent');
 const pkjson = require('../package.json');
 
 const app = express()
@@ -34,40 +36,38 @@ logger.info('turning on app...');
    */
   app.get('/', (req, res, next) => {
     if ((req.query.zip) && req.query.zip.length > 0) {
-      //process.env.KL_OWM_API_KEY
       const apiUrl = 'https://api.openweathermap.org/data/2.5/';
       const args = req.query.zip;
-      //https://api.openweathermap.org/data/2.5/weather?zip=10023,us&appid=k
+      let url = apiUrl;
       if (process.env.KL_OWM_API_KEY < 1) {
         logger.warn('openweathermap Key is missing, Please add an API key to the configuration file.');
         res.status(403).send({ error: "openweathermap Key is missing, Please add an API key to the configuration" });
       }
-      let url = apiUrl;
       // if zipcode ?zip={zip},us (us only?)
       // if city / state use ?q=
       url = url + 'weather?zip=' + args + ',us' + `&appid=${process.env.KL_OWM_API_KEY}`;
-      // DEBUG: output for simple api call to city
-      logger.info(`url: ${url}`);
-
-      request.get(url).then((response) => {
-        if (response.status === 200) {
-          const json = response.body;
-          if (typeof json.main === 'undefined') {
-            reject('Are you trying to make me crash?');
-          } else {
-            const returnstring = `Current temperature in ${json.name}, is ${this.convertFahrenheit(json.main.temp)
-            }°F, with a humidity of ${json.main.humidity
-            }%, Current Weather is ${json.weather[0].description}`;
-            res.status(200).send({ data: returnstring });
+      try {
+        request.get(url).then((response) => {
+          if (response.status === 200) {
+            const json = response.body;
+            if (typeof json.main === 'undefined') {
+              logger.warn(`json.main === 'undefined'`);
+              res.status(400).send({ data: 'Are you trying to make me crash?' });
+            } else {
+              const returnstring = `Current temperature in ${json.name}, is ${kelvinToFahrenheit(json.main.temp)
+              }°F, with a humidity of ${json.main.humidity
+              }%, Current Weather is ${json.weather[0].description}`;
+              res.status(200).send({ data: returnstring });
+            }
           }
-        }
-      });
+        });
+      } catch (error) {
+        logger.error(error);
+        res.status(400).send({ error: 'Are you trying to make me crash?' });
+      }
     } else {
       res.status(200).send({ data: `Please use the endpoint with a get param of 'zip'. example https://meteorology.herokuapp.com/?zip=123` });
     }
-
-
-
   });
 
   /**
