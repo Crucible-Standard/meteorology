@@ -4,7 +4,7 @@ const { kelvinToFahrenheit } = require('server-side-tools').convert;
 
 function getSingle (req) {
   return new Promise((resolve, reject) => {
-    if ((req.query.text) && req.query.text.length > 0) || ((req.body.text) && req.body.text.length > 0){
+    if (((req.query.text) && req.query.text.length > 0) || ((req.body.text) && req.body.text.length > 0)) {
       const apiUrl = 'https://api.openweathermap.org/data/2.5/';
       const args = req.query.text || req.body.text;
       let url = apiUrl;
