@@ -17,6 +17,8 @@ app.use(helmet());
 // using bodyParser to parse json bodies into js objects
 app.use(bodyParser.json());
 
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
 /** set up cors middleware
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
