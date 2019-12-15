@@ -2,12 +2,12 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const helmet = require('helmet');
 const logger = require('server-side-tools').logger;
-const format = require('server-side-tools').format;
-const { kelvinToFahrenheit } = require('server-side-tools').convert;
-const request = require('superagent');
 const pkjson = require('../package.json');
+const weather = require('./models/weather');
 
-const app = express()
+const app = express();
+
+let requestsCount = 0;
 
 // adding helmet to enhance api security
 app.use(helmet());
@@ -35,39 +35,9 @@ logger.info('turning on app...');
    * @param {Next} next - Express Next object
    */
   app.get('/', (req, res, next) => {
-    if ((req.query.zip) && req.query.zip.length > 0) {
-      const apiUrl = 'https://api.openweathermap.org/data/2.5/';
-      const args = req.query.zip;
-      let url = apiUrl;
-      if (process.env.KL_OWM_API_KEY < 1) {
-        logger.warn('openweathermap Key is missing, Please add an API key to the configuration file.');
-        res.status(403).send({ error: "openweathermap Key is missing, Please add an API key to the configuration" });
-      }
-      // if zipcode ?zip={zip},us (us only?)
-      // if city / state use ?q=
-      url = url + 'weather?zip=' + args + ',us' + `&appid=${process.env.KL_OWM_API_KEY}`;
-      try {
-        request.get(url).then((response) => {
-          if (response.status === 200) {
-            const json = response.body;
-            if (typeof json.main === 'undefined') {
-              logger.warn(`json.main === 'undefined'`);
-              res.status(400).send({ data: 'Are you trying to make me crash?' });
-            } else {
-              const returnstring = `Current temperature in ${json.name}, is ${kelvinToFahrenheit(json.main.temp)
-              }°F, with a humidity of ${json.main.humidity
-              }%, Current Weather is ${json.weather[0].description}`;
-              res.status(200).send({ data: returnstring });
-            }
-          }
-        });
-      } catch (error) {
-        logger.error(error);
-        res.status(400).send({ error: 'Are you trying to make me crash?' });
-      }
-    } else {
-      res.status(200).send({ data: `Please use the endpoint with a get param of 'zip'. example https://meteorology.herokuapp.com/?zip=123` });
-    }
+    requestsCount++;
+    logger.info(`/ request from ${req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip}`);
+    res.status(200).send({ data: [weather.getSingle(req)] });
   });
 
   /**
@@ -76,9 +46,11 @@ logger.info('turning on app...');
    * @param {Next} next - Express Next object
    */
   app.get('/health', (req, res, next) => {
+    requestsCount++;
     const time = process.uptime();
     const uptime = format.toDDHHMMSS(time + '');
-    res.status(200).send({ data: {uptime: uptime, version: pkjson.version} });
+    logger.info(`/health request from ${req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip}`);
+    res.status(200).send({ data: {uptime: uptime, version: pkjson.version, requests: requestsCount} });
   });
 
   // heroku dynamically assigns your app a port, so you can't set the port to a fixed number.
