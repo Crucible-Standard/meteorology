@@ -1,6 +1,5 @@
 const request = require('superagent');
 const logger = require('server-side-tools').logger;
-const format = require('server-side-tools').format;
 const { kelvinToFahrenheit } = require('server-side-tools').convert;
 
 function getSingle (req) {
