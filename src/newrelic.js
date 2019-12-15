@@ -9,7 +9,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['Meowfacts API'],
+  app_name: ['Meteorology API'],
   /**
    * Your New Relic license key.
    */
