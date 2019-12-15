@@ -1,3 +1,4 @@
+require('newrelic');
 const bodyParser = require('body-parser');
 const express = require('express');
 const helmet = require('helmet');
@@ -35,10 +36,18 @@ logger.info('turning on app...');
    * @param {Response} res - Express response object
    * @param {Next} next - Express Next object
    */
-  app.get('/', async (req, res, next) => {
+  app.get('/', (req, res, next) => {
     requestsCount++;
     logger.info(`/ request from ${req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip}`);
-    res.status(200).send({ data: [await weather.getSingle(req)] });
+    weather.getSingle(req).then((response) => {
+      res.status(200).send({ data: [response] });
+      logger.debug(response);
+    }).catch((error) => {
+      this.sendMessage(message.channel, `${error}`);
+      res.status(400).send({ data: [response] });
+    });
+
+
   });
 
   /**
