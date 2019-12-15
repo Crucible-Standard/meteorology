@@ -4,9 +4,9 @@ const { kelvinToFahrenheit } = require('server-side-tools').convert;
 
 function getSingle (req) {
   return new Promise((resolve, reject) => {
-    if ((req.query.zip) && req.query.zip.length > 0) {
+    if ((req.query.text) && req.query.text.length > 0) {
       const apiUrl = 'https://api.openweathermap.org/data/2.5/';
-      const args = req.query.zip;
+      const args = req.query.text;
       let url = apiUrl;
       if (process.env.KL_OWM_API_KEY < 1) {
         logger.warn('openweathermap Key is missing, Please add an API key to the configuration file.');
@@ -35,7 +35,7 @@ function getSingle (req) {
         reject('Are you trying to make me crash?');
       }
     } else {
-      resolve(`Please use the endpoint with a get param of 'zip'. example https://meteorology.herokuapp.com/?zip=123`);
+      resolve(`Please use the endpoint with a get param of 'text'. example https://meteorology.herokuapp.com/?text=123`);
     }
   });
 }

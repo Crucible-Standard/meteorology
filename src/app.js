@@ -40,11 +40,11 @@ logger.info('turning on app...');
     requestsCount++;
     logger.info(`/ request from ${req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip}`);
     weather.getSingle(req).then((response) => {
-      res.status(200).send({ data: [response] });
+      res.status(200).send({ response_type: 'in_channel', text: response });
       logger.debug(response);
     }).catch((error) => {
       this.sendMessage(message.channel, `${error}`);
-      res.status(400).send({ data: [response] });
+      res.status(400).send({ response_type: 'in_channel', text: response });
     });
 
 
