@@ -35,10 +35,10 @@ logger.info('turning on app...');
    * @param {Response} res - Express response object
    * @param {Next} next - Express Next object
    */
-  app.get('/', (req, res, next) => {
+  app.get('/', async (req, res, next) => {
     requestsCount++;
     logger.info(`/ request from ${req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip}`);
-    res.status(200).send({ data: [weather.getSingle(req)] });
+    res.status(200).send({ data: [await weather.getSingle(req)] });
   });
 
   /**
