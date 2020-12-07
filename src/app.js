@@ -1,8 +1,8 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const helmet = require('helmet');
-const logger = require('server-side-tools').logger;
-const format = require('server-side-tools').format;
+const logger = require('@wh-iterabb-it/sst').logger;
+const format = require('@wh-iterabb-it/sst').format;
 const pkjson = require('../package.json');
 const weather = require('./models/weather');
 
