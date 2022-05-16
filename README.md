@@ -23,8 +23,8 @@ response:
 
 ```json
 {
-	response_type: "in_channel"
-	text: "Current temperature in New York, is 69.224°F, with a humidity of 74%, Current Weather is broken clouds"
+	"response_type": "in_channel",
+	"text": "Current temperature in New York, is 69.224°F, with a humidity of 74%, Current Weather is broken clouds"
 }
 ```
 
