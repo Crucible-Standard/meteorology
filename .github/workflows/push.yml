@@ -1,29 +1,42 @@
 name: Default Node CI
 
 on:
-  push:
-    branches: main
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
+  lint:
+    name: lints
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking Out Commits Securely . . .
+        uses: actions/checkout@v2
+      - name: Setup Node 14 Environment . . .
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Install Dependencies . . .
+        working-directory: .
+        run: npm ci
+      - name: Build Docker Image "crucible-standard/meteorology"
+        run: docker build -t crucible-standard/meteorology .
+      - name: Run The Lints . . .
+        run: docker run crucible-standard/meteorology npm run test:lint
   tests:
     name: tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checking Out Commits Securely...
+      - name: Checking Out Commits Securely . . .
         uses: actions/checkout@v2
-      - name: Setup Node 14 Environment...
+      - name: Setup Node 14 Environment . . .
         uses: actions/setup-node@v1
         with:
           node-version: 14
-      - name: Install Dependencies...
+      - name: Install Dependencies . . .
         working-directory: .
         run: npm ci
-          registry-url: https://npm.pkg.github.com/
-          scope: "@wh-iterabb-it"
-        env:
-          GITHUB_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
-      - name: Running npm run test...
-        working-directory: .
-        run: npm run test
+      - name: Build Docker Image "crucible-standard/meteorology"
+        run: docker build -t crucible-standard/meteorology .
+      - name: Run The Tests . . .
+        run: docker run crucible-standard/meteorology npm run test
+

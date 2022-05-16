@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:12.13.0
+FROM node:14-alpine
 
 # install git creating working directory
 RUN apk update && apk upgrade && \
@@ -8,7 +8,7 @@ RUN apk update && apk upgrade && \
 # copy files to working directory
 COPY . /usr/src/app/
 
-# change working directory
+# change to working directory
 WORKDIR /usr/src/app
 
 # install node dependencies
