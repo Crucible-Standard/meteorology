@@ -1,77 +1,70 @@
 interface ICurrentWeather {
-  location: ILocation,
-  weather: IWeather,
+  location: ILocation;
+  weather: IWeather;
 }
 
 interface ILocation {
-  country: string,
-  sunrise: number,
-  sunset: number,
-  timezone: number,
+  country: string;
+  sunrise: number;
+  sunset: number;
+  timezone: number;
   coord: {
-    lon: number,
-    lat: number,
-  },
+    lon: number;
+    lat: number;
+  };
 }
 
 interface ICondition {
-  code: number,
-  icon: string,
-  description: string,
-  main: string,
+  code: number;
+  icon: string;
+  description: string;
+  main: string;
 }
 
 interface IWeather {
   temp: {
     current: {
-      kelvin: number,
-      fahrenheit: number,
-      celsius: number
-    }
+      kelvin: number;
+      fahrenheit: number;
+      celsius: number;
+    };
     min: {
-      kelvin: number,
-      fahrenheit: number,
-      celsius: number
-    },
+      kelvin: number;
+      fahrenheit: number;
+      celsius: number;
+    };
     max: {
-      kelvin: number,
-      fahrenheit: number,
-      celsius: number
-    },
+      kelvin: number;
+      fahrenheit: number;
+      celsius: number;
+    };
     feels: {
-      kelvin: number,
-      fahrenheit: number,
-      celsius: number
-    },
-  },
-  pressure: number,
-  humidity: number,
-  condition: ICondition,
-  visibility: number,
+      kelvin: number;
+      fahrenheit: number;
+      celsius: number;
+    };
+  };
+  pressure: number;
+  humidity: number;
+  condition: ICondition;
+  visibility: number;
   wind: {
-    speed: number,
-    deg: number
-  },
+    speed: number;
+    deg: number;
+  };
   clouds: {
-    all: number
-  }
+    all: number;
+  };
 }
 
 function getWeatherByLocation(zip: string): ICurrentWeather {
   getCurrentWeather(zip);
-
 }
-
-
-
 
 export { getWeatherByLocation };
 
 // const request = require("superagent");
 // const { logger, convert } = require("sst");
-
-
-
 
 // function getSingle(req) {
 //   return new Promise((resolve, reject) => {
