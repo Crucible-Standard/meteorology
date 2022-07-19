@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+import axios from "axios";
 
 interface ICurrentWeatherOWeather {
   cod: string; //  Internal parameter of OpenWeather
@@ -64,15 +64,22 @@ interface ICurrentWCOWeather {
   icon: string; // Weather icon id
 }
 
-function getCurrentWeather(zip: string): Promise<ICurrentWeatherOWeather> {
+function getCurrentWeather(zip: string): Promise<any> {
   const apiUrl = "https://api.openweathermap.org/data/2.5/";
   const url = `${apiUrl}weather?zip=${zip},us&appid=${process.env.KL_OWM_API_KEY}`;
-  return fetch(url, {
-    method: "post",
-    headers: { "Content-Type": "application/json" },
-  }).then((resp: any) => {
-    resp.json();
-  });
+  return axios
+    .post(url, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response: any) => {
+      // handle success
+      response.json();
+    })
+    .catch(function (error: any) {
+      // handle error
+      console.log(error);
+    });
 }
 
 export {

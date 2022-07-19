@@ -65,8 +65,14 @@ interface IWeather {
   };
 }
 
-function getWeatherByLocation(zip: string): Promise<ICurrentWeatherOWeather> {
-  getCurrentWeather(zip);
+async function getWeatherByLocation(zip: string): Promise<any> {
+  try {
+    const response = await getCurrentWeather(zip);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export { getWeatherByLocation };
