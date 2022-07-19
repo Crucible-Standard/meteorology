@@ -16,11 +16,12 @@ class WeatherController extends DefaultController {
     request: express.Request,
     response: express.Response
   ) => {
-    const zip = `${request.params.zip}`;
+    const zip = `${request.query.zip}`;
 
+    const weather = getWeatherByLocation(zip);
     response.status(200).send({
       data: {
-        message: `${getWeatherByLocation(zip)}`,
+        message: weather,
       },
       meta: {
         zip: `${zip}`,
