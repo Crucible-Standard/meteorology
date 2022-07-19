@@ -64,33 +64,21 @@ interface ICurrentWCOWeather {
   icon: string; // Weather icon id
 }
 
-async function getCurrentWeather(
-  zip: string
-): Promise<ICurrentWeatherOWeather> {
+function getCurrentWeather(zip: string): Promise<ICurrentWeatherOWeather> {
   const apiUrl = "https://api.openweathermap.org/data/2.5/";
   const url = `${apiUrl}weather?zip=${zip},us&appid=${process.env.KL_OWM_API_KEY}`;
-  return new Promise(async (resolve, reject) => {
-    const response = await fetch(url, {
-      method: "post",
-      body: JSON.stringify(body),
-      headers: { "Content-Type": "application/json" },
-    })
-      // the JSON body is taken from the response
-      .then((res) => res.json())
-      .then((res) => {
-        if (typeof res.main === "undefined") {
-          reject("Are you trying to make me crash?");
-        }
-        return res;
-      })
-      .catch((error) => {
-        console.log(error);
-        reject(error);
-      });
-    // The response has an `any` type, so we need to cast
-    // it to the `ICurrentWeatherOWeather` type, and return it from the promise
-    resolve(response as ICurrentWeatherOWeather);
+  return fetch(url, {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+  }).then((resp: any) => {
+    resp.json();
   });
 }
 
-export { getCurrentWeather };
+export {
+  getCurrentWeather,
+  ICurrentWCOWeather,
+  ICurrentMainOWeather,
+  ICurrentWeatherOWeather,
+  ICurrentListOWeather,
+};

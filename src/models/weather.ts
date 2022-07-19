@@ -1,3 +1,11 @@
+import {
+  getCurrentWeather,
+  ICurrentWCOWeather,
+  ICurrentMainOWeather,
+  ICurrentWeatherOWeather,
+  ICurrentListOWeather,
+} from "../services/openweather";
+
 interface ICurrentWeather {
   location: ILocation;
   weather: IWeather;
@@ -57,7 +65,7 @@ interface IWeather {
   };
 }
 
-function getWeatherByLocation(zip: string): ICurrentWeather {
+function getWeatherByLocation(zip: string): Promise<ICurrentWeatherOWeather> {
   getCurrentWeather(zip);
 }
 
