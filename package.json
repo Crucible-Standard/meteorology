@@ -1,6 +1,9 @@
 {
   "name": "meteorology",
-  "version": "0.4.1",
+  "version": "0.4.2",
+  "engines": {
+    "node": "16.x"
+  },
   "description": "a simple api for getting meteorological data by zipcode",
   "repository": {
     "type": "git",
@@ -17,7 +20,9 @@
   "scripts": {
     "serve": "node dist/src/server",
     "start": "ts-node src/server",
+    "heroku-start": "ts-node src/server",
     "typings": "src/index",
+    "build": "tsc",
     "postbuild": "cp package.json dist/package.json && cd dist && npm install",
     "test": "jest",
     "test:watch": "jest --watchAll",

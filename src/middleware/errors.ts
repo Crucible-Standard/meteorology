@@ -5,6 +5,14 @@ import { NextFunction, Request, Response } from "express";
  * instead look to adopt the one you like and then adapt it to your needs.
  * Errors, and adding RESTful information is a good ideal.
  * statusCode, error message, and stack trace or error payloads are enough for most cases.
+ * @description This middleware is used to extend the Error global object to add additional properties and context. It also adds a method to the Error object to append additional messages to the error message.
+ * @constructor HttpException
+ * @param {number} statusCode - HTTP status code
+ * @param {string} message - Error message
+ * @param {string} name - Error data
+ * @param {string} data - Optional error payload
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
  */
 class HttpException extends Error {
   public readonly statusCode: number;
@@ -248,7 +256,9 @@ function getExceptionByStatusCode(statusCode: number): HttpException {
 const code = getExceptionByStatusCode;
 
 /**
- *
+ * @description - Express error middleware object
+ * @example
+ *  app.use(errorMiddleware);
  * @param {Request} request - Express request object
  * @param {Response} response - Express response object
  * @param {NextFunction} next - Express next function
