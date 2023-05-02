@@ -2,9 +2,9 @@ import * as express from "express";
 import { DefaultController } from ".";
 import { getWeatherByLocation } from "../models/weather";
 
-class WeatherController extends DefaultController {
+class MainWeatherController extends DefaultController {
   constructor() {
-    super("/current");
+    super("/");
     this.initializeRoutes();
   }
 
@@ -25,9 +25,10 @@ class WeatherController extends DefaultController {
       },
       meta: {
         zip: `${zip}`,
+        status: 200,
       },
     });
   };
 }
 
-export default WeatherController;
+export default MainWeatherController;
