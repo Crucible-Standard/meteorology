@@ -3,6 +3,8 @@ import * as express from "express";
 import helmet from "helmet";
 import compression from "compression";
 
+import { corsMiddleware } from "./middleware/cors";
+
 const PORT = process.env.PORT || 5000;
 
 interface Controller {
@@ -34,6 +36,7 @@ class App {
     this.app.use(helmet());
     this.app.use(compression());
     this.app.use(bodyParser.json());
+    this.app.use(corsMiddleware);
   }
 
   private initializeControllers(controllers: Controller[]) {
