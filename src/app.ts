@@ -2,6 +2,7 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 import helmet from "helmet";
 import compression from "compression";
+import { default as logger } from "./utils/logger";
 
 import { corsMiddleware } from "./middleware/cors";
 
@@ -24,7 +25,7 @@ class App {
 
   public listen() {
     this.app.listen(PORT, () => {
-      console.log(`App listening on the port ${PORT}`);
+      logger.info(`App listening on the port ${PORT}`);
     });
   }
 
