@@ -1,15 +1,8 @@
-import {
-  getCurrentWeather,
-  ICurrentWCOWeather,
-  ICurrentMainOWeather,
-  ICurrentWeatherOWeather,
-  ICurrentListOWeather,
-} from "../services/openweather";
+import { default as logger } from "../utils/logger";
 
-interface ICurrentWeather {
-  location: ILocation;
-  weather: IWeather;
-}
+import { getCurrentWeather } from "../services/openweather";
+
+import { kelvinToFahrenheit, kelvinToCelsius } from "../utils/convert";
 
 interface ILocation {
   country: string;
@@ -65,70 +58,105 @@ interface IWeather {
   };
 }
 
-async function getWeatherByLocation(zip: string): Promise<any> {
+interface IWeatherResponse {
+  location: ILocation;
+  weather: IWeather;
+}
+
+interface ISlackResponse {
+  response_type: string;
+  text: string;
+}
+
+async function getWeatherByLocation(zip: string): Promise<IWeatherResponse> {
   try {
     const response = await getCurrentWeather(zip);
-    console.log(response);
-    return response;
+    const weatherResponseReturn = {
+      location: {
+        country: response.data.sys.country,
+        sunrise: response.data.sys.sunrise,
+        sunset: response.data.sys.sunset,
+        timezone: response.data.timezone,
+        coord: {
+          lon: response.data.coord.lon,
+          lat: response.data.coord.lat,
+        },
+      },
+      weather: {
+        temp: {
+          current: {
+            kelvin: response.data.main.temp,
+            fahrenheit: kelvinToFahrenheit(response.data.main.temp),
+            celsius: kelvinToCelsius(response.data.main.temp),
+          },
+          min: {
+            kelvin: response.data.main.temp_min,
+            fahrenheit: kelvinToFahrenheit(response.data.main.temp_min),
+            celsius: kelvinToCelsius(response.data.main.temp_min),
+          },
+          max: {
+            kelvin: response.data.main.temp_max,
+            fahrenheit: kelvinToFahrenheit(response.data.main.temp_max),
+            celsius: kelvinToCelsius(response.data.main.temp_max),
+          },
+          feels: {
+            kelvin: response.data.main.feels_like,
+            fahrenheit: kelvinToFahrenheit(response.data.main.feels_like),
+            celsius: kelvinToCelsius(response.data.main.feels_like),
+          },
+        },
+        pressure: response.data.main.pressure,
+        humidity: response.data.main.humidity,
+        condition: {
+          code: response.data.weather[0].id,
+          icon: response.data.weather[0].icon,
+          description: response.data.weather[0].description,
+          main: response.data.weather[0].main,
+        },
+        visibility: response.data.visibility,
+        wind: {
+          speed: response.data.wind.speed,
+          deg: response.data.wind.deg,
+        },
+        clouds: {
+          all: response.data.clouds.all,
+        },
+      },
+    };
+    return new Promise((resolve, reject) => {
+      resolve(weatherResponseReturn);
+    });
   } catch (error) {
-    console.error(error);
+    logger.warn("Error in src/models/getWeatherByLocation");
+    logger.error(error);
+    throw error;
   }
 }
 
-export { getWeatherByLocation };
+async function getSlackResponse(zip: string): Promise<ISlackResponse> {
+  try {
+    const response = await getCurrentWeather(zip);
+    const weatherResponseReturn = {
+      response_type: "in_channel",
+      text: `The weather in ${zip} is ${kelvinToFahrenheit(
+        response.data.main.temp
+      )}°F, with a humidity of ${
+        response.data.main.humidity
+      }%, Current Weather is ${response.data.weather[0].main}`,
+    };
+    return new Promise((resolve, reject) => {
+      resolve(weatherResponseReturn);
+    });
+  } catch (error) {
+    logger.warn("Error in src/models/getSlackResponse");
+    logger.error(error);
+    throw error;
+  }
+}
 
-// const request = require("superagent");
-// const { logger, convert } = require("sst");
-
-// function getSingle(req) {
-//   return new Promise((resolve, reject) => {
-//     if (
-//       (req.query.zip && req.query.zip.length > 0) ||
-//       (req.body.text && req.body.text.length > 0)
-//     ) {
-//       const apiUrl = "https://api.openweathermap.org/data/2.5/";
-//       const args = req.query.zip || req.body.text;
-//       let url = apiUrl;
-//       if (process.env.KL_OWM_API_KEY < 1) {
-//         logger.warn(
-//           "openweathermap Key is missing, Please add an API key to the configuration file."
-//         );
-//         reject(
-//           "openweathermap Key is missing, Please add an API key to the configuration"
-//         );
-//       }
-//       // if zipcode ?zip={zip},us (us only?)
-//       // if city / state use ?q=
-//       url = `${url}weather?zip=${args},us&appid=${process.env.KL_OWM_API_KEY}`;
-//       try {
-//         request.get(url).then((response) => {
-//           if (response.status === 200) {
-//             const json = response.body;
-//             if (typeof json.main === "undefined") {
-//               logger.warn(`json.main === 'undefined'`);
-//               reject("Are you trying to make me crash?");
-//             } else {
-//               const returnstring = `Current temperature in ${
-//                 json.name
-//               }, is ${convert.kelvinToFahrenheit(
-//                 json.main.temp
-//               )}°F, with a humidity of ${
-//                 json.main.humidity
-//               }%, Current Weather is ${json.weather[0].description}`;
-//               resolve(returnstring);
-//             }
-//           }
-//         });
-//       } catch (error) {
-//         logger.error(error);
-//         reject("Are you trying to make me crash?");
-//       }
-//     } else {
-//       resolve(
-//         `Please use the endpoint with a get param of 'zip'. example https://meteorology.herokuapp.com/?zip=10023`
-//       );
-//     }
-//   });
-// }
-
-// module.exports = { getSingle };
+export {
+  getWeatherByLocation,
+  getSlackResponse,
+  IWeatherResponse,
+  ISlackResponse,
+};

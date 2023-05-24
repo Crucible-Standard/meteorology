@@ -49,7 +49,7 @@ function fahrenheitToCelsius(fahrenheit: number, digit = 3): number {
   );
 }
 
-module.exports = {
+export {
   kelvinToFahrenheit,
   kelvinToCelsius,
   fahrenheitToCelsius,

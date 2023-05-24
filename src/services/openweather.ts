@@ -1,4 +1,7 @@
+import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 import axios from "axios";
+import { default as logger } from "../utils/logger";
+dotenv.config();
 
 interface ICurrentWeatherOWeather {
   cod: string; //  Internal parameter of OpenWeather
@@ -39,9 +42,6 @@ interface ICurrentListOWeather {
   };
   visability: number; // Average visibility, metres. The maximum value of the visibility is 10km
   pop: number; // Probability of precipitation. The values of the parameter vary between 0 and 1, where 0 is equal to 0%, 1 is equal to 100%
-  sys: {
-    pod: string; //  Part of the day (n - night, d - day)
-  };
   dt_txt: string; // Time of data forecasted, unix, UTC
 }
 
@@ -65,8 +65,17 @@ interface ICurrentWCOWeather {
 }
 
 function getCurrentWeather(zip: string): Promise<any> {
+  const zipCode = zip ? zip : "78701";
+  const apiKey =
+    process.env.KL_OWM_API_KEY != undefined
+      ? process.env.KL_OWM_API_KEY
+      : "ERROR";
+  if (apiKey === "ERROR") {
+    logger.info("No API key found for OpenWeatherMap");
+    return;
+  }
   const apiUrl = "https://api.openweathermap.org/data/2.5/";
-  const url = `${apiUrl}weather?zip=${zip},us&appid=${process.env.KL_OWM_API_KEY}`;
+  const url = `${apiUrl}weather?zip=${zipCode},us&appid=${apiKey}`;
   return axios
     .post(url, {
       method: "post",
@@ -74,11 +83,13 @@ function getCurrentWeather(zip: string): Promise<any> {
     })
     .then((response: any) => {
       // handle success
-      response.json();
+      return response;
     })
     .catch(function (error: any) {
       // handle error
-      console.log(error);
+      logger.info("Axios has encountered an error in services/openweather");
+      logger.info(url);
+      logger.info(error);
     });
 }
 
