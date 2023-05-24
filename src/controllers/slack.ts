@@ -9,8 +9,7 @@ class SlackWeatherController extends DefaultController {
   }
 
   private initializeRoutes() {
-    this.router.get(this.path, this.getWeatherByLocation);
-    this.router.post(this.path, this.getWeatherByLocation);
+    this.router.all(this.path, this.getWeatherByLocation);
   }
 
   private getWeatherByLocation = async (
