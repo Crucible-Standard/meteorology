@@ -16,11 +16,11 @@ class SlackWeatherController extends DefaultController {
     request: express.Request,
     response: express.Response
   ) => {
-    if (!request.query.zip && !request.query.text) {
+    if (!request.query.zip && !request.body.text) {
       response.status(400).send("No zip code provided");
       return;
     }
-    const zip = `${request.query.zip || request.query.text}`;
+    const zip = `${request.query.zip || request.body.text}`;
 
     const weather = await getSlackResponse(zip);
     response.status(200).send(weather);
