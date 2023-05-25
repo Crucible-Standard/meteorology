@@ -82,7 +82,10 @@ Response
 
 #### /slack
 
-Simple usage for a Slack Command
+
+The Slack endpoint will reply to `POST` and `GET` requests. The endpoint will also take the location you wish to recieve the weather about using query param `zip` or in the body of as a URL-encoded field `text` just like [slack bot use](https://api.slack.com/interactivity/slash-commands#app_command_handling). 
+
+Simple usage for a Slack Command. 
 
 ```bash
 curl https://meteorology.herokuapp.com/slack?zip=10023
@@ -97,7 +100,6 @@ Response
 }
 ```
 
-The Slack endpoint will reply to `POST` and `GET` requests. The endpoint will also take the location you wish to recieve the weather about using query param `zip` or in the body of as a URL-encoded field `text` just like [slack bot use](https://api.slack.com/interactivity/slash-commands#app_command_handling). 
 
 
 
