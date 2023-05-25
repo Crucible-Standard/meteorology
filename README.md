@@ -25,7 +25,6 @@ Response
 
 ```json
 {
-{
   "location": {
     "country": "US",
     "sunrise": 1684920699,
@@ -76,7 +75,6 @@ Response
       "all": 0
     }
   }
-}
 }
 ```
 
