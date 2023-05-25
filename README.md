@@ -12,28 +12,10 @@ meteorology
 A simply api that returns the weather information based on zip or city. 
 It also has a `/slack` endpoint for using with slash-commands on slack bots. 
 
-#### /slack
-
-Simple usage for a Slack Command
-
-```bash
-curl https://meteorology.herokuapp.com/slack?zip=10023
-```
-
-Response
-
-```json
-{
-	"response_type": "in_channel",
-	"text": "Current temperature in New York, is 69.224°F, with a humidity of 74%, Current Weather is broken clouds"
-}
-```
-
-The Slack endpoint will reply to `POST` and `GET` requests. The endpoint will also take the location you wish to recieve the weather about using query param `zip` or in the body of as a URL-encoded field `text` just like [slack bot use](https://api.slack.com/interactivity/slash-commands#app_command_handling). 
 
 #### / - Default Route Usage
 
-By default you can pass the location you wish to recieve the weather about using query param `zip`, without a zipcode or location information the endpoint will return a status `400` error. By providing the endpoint with a location it will return a full response of fields. For a more minimal response, check out the [/slack endpoint]()
+By default you can pass the location you wish to recieve the weather about using query param `zip`, without a zipcode or location information the endpoint will return a status `400` error. By providing the endpoint with a location it will return a full response of fields. For a more minimal response, check out the [/slack endpoint](#slack).
 
 ```bash
 curl https://meteorology.herokuapp.com/?zip=10023
@@ -98,16 +80,49 @@ Response
 }
 ```
 
+#### /slack
 
-### Installation
+Simple usage for a Slack Command
 
+```bash
+curl https://meteorology.herokuapp.com/slack?zip=10023
 ```
-npm install
+
+Response
+
+```json
+{
+	"response_type": "in_channel",
+	"text": "Current temperature in New York, is 69.224°F, with a humidity of 74%, Current Weather is broken clouds"
+}
 ```
+
+The Slack endpoint will reply to `POST` and `GET` requests. The endpoint will also take the location you wish to recieve the weather about using query param `zip` or in the body of as a URL-encoded field `text` just like [slack bot use](https://api.slack.com/interactivity/slash-commands#app_command_handling). 
+
+
+
+## Local Development
+
+## Installation
+
+The application is typescript and provided with a docker container which is used for a ubiquitious development experience. Tests, linting, and all CI/CD uses the docker container, you can build it using the following commands. 
+
+```bash
+docker build -t crucible-standard/meteorology .
+
+docker run crucible-standard/meteorology npm install
+```
+
+Next you can run tests
+
+```bash
+docker run crucible-standard/meteorology npm run test
+```
+
 ### Example Usage
 
 Basic usage
 ```
-npm run start
+docker run crucible-standard/meteorology npm run start
 ```
 
