@@ -1,0 +1,154 @@
+{
+   "openapi": "3.0.0",
+   "servers": [
+      {
+         "description": "Documentation for https://meteorology.herokuapp.com, a simple RESTful API for weather data by zipcode",
+         "url": "https://meteorology.herokuapp.com"
+      }
+   ],
+   "info": {
+      "description": "This RESTful API returns a json object with weather data by zipcode",
+      "version": "0.4.2",
+      "title": "Meteorology API Response",
+      "contact": {
+         "email": "admin@crucible.news",
+         "name": "Github Issues for Support",
+         "url": "https://github.com/Crucible-Standard/meteorology/issues"
+      },
+      "license": {
+         "name": "GNU General Public License v3.0",
+         "url": "https://github.com/Crucible-Standard/meteorology/blob/main/LICENSE"
+      }
+   },
+   "tags": [
+      {
+         "name": "public",
+         "description": "Operations available to the public"
+      }
+   ],
+   "paths": {
+      "/": {
+         "get": {
+            "tags": [
+               "public"
+            ],
+            "summary": "Default Root Endpoint for Wealther ",
+            "operationId": "defaultRoot",
+            "description": "default get request endpoint returning a standard response",
+            "responses": {
+               "200": {
+                  "description": "A successful response will contain a single fortune",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {
+                              
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/health": {
+        "get": {
+          "tags": [
+            "public"
+          ],
+          "summary": "Health Check Endpoint",
+          "operationId": "healthcheck",
+          "description": "The health check endpoint will return a status of 200 if the api is up and ready to recieve connections. It will tell the uptime, and total requests served since last restart. It also has a field for version which corresponds to the versioned release from the github repo.  \n",
+          "responses": {
+             "200": {
+                "description": "Default Health check response",
+                "content": {
+                   "application/json": {
+                      "schema": {
+                          "$ref": "#/components/schemas/healthcheck"
+                        }
+                      }
+                   }
+                }
+             }
+          }
+      },
+      "/slack": {
+        "get": {
+          "tags": [
+            "public"
+          ],
+          "summary": "Default Root Endpoint for Random Fortune In Slack Style Response",
+          "operationId": "slack",
+          "description": "This endpoint's response shape is designed to match the requirements for slack messages. You can easily use this api to have a POST or GET for this /slack endpoint to get the same functionality as the defaultRoot endpoint, but in a slack style response.  \n",
+          "responses": {
+             "200": {
+                "description": "A successful response will a smaller response",
+                "content": {
+                   "application/json": {
+                      "schema": {
+                          "$ref": "#/components/schemas/weatherSlack"
+                        }
+                      }
+                   }
+                }
+             }
+          }
+      }
+   },
+   "components": {
+      "schemas": {
+         "weatherSlack": {
+            "type": "object",
+            "properties": {
+              "response_type": {
+                "type": "string",
+                "example": "in_channel"
+              },
+              "text": {
+                "type": "string",
+                "example": "The weather in 10023 is 62.258°F, with a humidity of 42%, Current Weather is Clear"
+              }
+            }
+         },
+         "healthcheck": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/healthcheckData"
+              },
+              "meta": {
+                "$ref": "#/components/schemas/healthcheckMeta"
+              }
+            }
+         },
+         "healthcheckMeta": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string",
+              "example": "2023-05-23T17:10:27.359Z"
+            },
+            "uptime": {
+              "type": "string",
+              "example": "00:00:39:45"
+            },
+            "version": {
+              "type": "string",
+              "example": "0.1.1"
+            }
+          }
+        },
+        "healthcheckData": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "example": "ok"
+            }
+          }
+        }
+      }
+   }
+}
