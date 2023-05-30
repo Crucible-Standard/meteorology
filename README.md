@@ -4,6 +4,7 @@ meteorology
 [![Issues](https://img.shields.io/github/issues/Crucible-Standard/meteorology.svg)](https://github.com/Crucible-Standard/meteorology/issues)
 [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://github.com/Crucible-Standard/meteorology/blob/main/LICENSE)
 ![Known Vulnerabilities](https://snyk.io/test/github/Crucible-Standard/meteorology/badge.svg)
+[![codecov](https://codecov.io/gh/Crucible-Standard/meteorology/branch/main/graph/badge.svg)](https://codecov.io/gh/Crucible-Standard/meteorology)
 
 
 
