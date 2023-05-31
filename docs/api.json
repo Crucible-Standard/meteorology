@@ -153,7 +153,7 @@
           "type": "object",
           "properties": {
             "temp": {
-              
+              "$ref": "#/components/schemas/defaultWeatherWeatherTemp"
             },
             "pressure": {
               "type": "integer",
@@ -174,10 +174,72 @@
               "example": 10000
             },
             "wind": {
-              
+              "$ref": "#/components/schemas/defaultWeatherWeatherWind"
             },
             "clouds": {
-              
+              "$ref": "#/components/schemas/defaultWeatherWeatherClouds"
+            },
+          }
+        },
+        "defaultWeatherWeatherTemp": {
+          "type": "object",
+          "properties": {
+            "current": {
+              "$ref": "#/components/schemas/defaultWeatherWeatherTempReading"
+            },
+            "min": {
+              "$ref": "#/components/schemas/defaultWeatherWeatherTempReading"
+            },
+            "max": {
+              "$ref": "#/components/schemas/defaultWeatherWeatherTempReading"
+            },
+            "feels": {
+              "$ref": "#/components/schemas/defaultWeatherWeatherTempReading"
+            },
+          }
+        },
+        "defaultWeatherWeatherTempReading": {
+          "type": "object",
+          "properties": {
+            "kelvin": {
+              "type": "integer",
+              "format": "int32",
+              "example": 292.55
+            },
+            "fahrenheit": {
+              "type": "integer",
+              "format": "int32",
+              "example": 66.92
+            },
+            "celsius": {
+              "type": "integer",
+              "format": "int32",
+              "example": 19.4
+            },
+          }
+        },
+        "defaultWeatherWeatherWind": {
+          "type": "object",
+          "properties": {
+            "speed": {
+              "type": "integer",
+              "format": "int32",
+              "example": 3.6
+            },
+            "deg": {
+              "type": "integer",
+              "format": "int32",
+              "example": 50
+            },
+          }
+        },
+        "defaultWeatherWeatherClouds": {
+          "type": "object",
+          "properties": {
+            "all": {
+              "type": "integer",
+              "format": "int32",
+              "example": 0
             },
           }
         },
@@ -203,6 +265,7 @@
             },
           }
         },
+        
          "weatherSlack": {
             "type": "object",
             "properties": {
