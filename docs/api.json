@@ -41,10 +41,7 @@
                   "content": {
                      "application/json": {
                         "schema": {
-                           "type": "array",
-                           "items": {
-                              
-                           }
+                          "$ref": "#/components/schemas/defaultWeatherResponse"
                         }
                      }
                   }
@@ -99,6 +96,113 @@
    },
    "components": {
       "schemas": {
+        "defaultWeatherResponse": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "$ref": "#/components/schemas/defaultWeatherLocation"
+            },
+            "weather": {
+              "$ref": "#/components/schemas/defaultWeatherWeather"
+            }
+          }
+        },
+        "defaultWeatherLocation": {
+          "type": "object",
+          "properties": {
+            "country": {
+              "type": "string",
+              "example": "US"
+            },
+            "sunrise": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1685525253
+            },
+            "sunset": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1685578798
+            },
+            "timezone": {
+              "type": "integer",
+              "format": "int32",
+              "example": -14400
+            },
+            "coord": {
+              "$ref": "#/components/schemas/defaultWeatherLocationCoord"
+            },
+          }
+        },
+        "defaultWeatherLocationCoord": {
+          "type": "object",
+          "properties": {
+            "lon": {
+              "type": "integer",
+              "format": "int32",
+              "example": -73.9827
+            },
+            "lat": {
+              "type": "integer",
+              "format": "int32",
+              "example": 40.7764
+            },
+          }
+        },
+        "defaultWeatherWeather": {
+          "type": "object",
+          "properties": {
+            "temp": {
+              
+            },
+            "pressure": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1025
+            },
+            "humidity": {
+              "type": "integer",
+              "format": "int32",
+              "example": 51
+            },
+            "condition": {
+              "$ref": "#/components/schemas/defaultWeatherWeatherCondition"
+            },
+            "visibility": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10000
+            },
+            "wind": {
+              
+            },
+            "clouds": {
+              
+            },
+          }
+        },
+        "defaultWeatherWeatherCondition": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "format": "int32",
+              "example": 800
+            },
+            "icon": {
+              "type": "string",
+              "example": "01d"
+            },
+            "description": {
+              "type": "string",
+              "example": "clear sky"
+            },
+            "main": {
+              "type": "string",
+              "example": "Clear"
+            },
+          }
+        },
          "weatherSlack": {
             "type": "object",
             "properties": {
