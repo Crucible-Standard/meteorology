@@ -30,11 +30,22 @@
       "/": {
          "get": {
             "tags": [
-               "public"
+              "public"
             ],
             "summary": "Default Root Endpoint for Wealther ",
             "operationId": "defaultRoot",
             "description": "default get request endpoint returning a standard response",
+            "parameters": [
+              {
+                "name": "zip",
+                "in": "query",
+                "description": "The zipcode for the location to query the weather data from.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+            ],
             "responses": {
                "200": {
                   "description": "A successful response will contain a single fortune",
