@@ -42,7 +42,8 @@
                 "description": "The zipcode for the location to query the weather data from.",
                 "required": true,
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "10023"
                 }
               },
             ],
