@@ -4,6 +4,7 @@ meteorology
 [![Issues](https://img.shields.io/github/issues/Crucible-Standard/meteorology.svg)](https://github.com/Crucible-Standard/meteorology/issues)
 [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://github.com/Crucible-Standard/meteorology/blob/main/LICENSE)
 ![Known Vulnerabilities](https://snyk.io/test/github/Crucible-Standard/meteorology/badge.svg)
+[![codecov](https://codecov.io/gh/Crucible-Standard/meteorology/branch/main/graph/badge.svg)](https://codecov.io/gh/Crucible-Standard/meteorology)
 
 
 
@@ -11,6 +12,17 @@ meteorology
 
 A simply api that returns the weather information based on zip or city. 
 It also has a `/slack` endpoint for using with slash-commands on slack bots. 
+
+### Documentation
+
+
+<div align="center">
+  <p>
+    <a href="https://rapidapi.com/wh-iterabb-it-wh-iterabb-it-default/api/meteorology/">
+      <img width="200" height="52" src="https://rapidapi.com/static-assets/default/dark-logo-78e48dc1-ca3f-4d67-a6f5-74032f439c8b.svg" />
+    </a>
+  </p>
+</div>
 
 
 #### / - Default Route Usage
