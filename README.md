@@ -19,7 +19,7 @@ It also has a `/slack` endpoint for using with slash-commands on slack bots.
 <div align="center">
   <p>
     <a href="https://rapidapi.com/wh-iterabb-it-wh-iterabb-it-default/api/meteorology/">
-      <img width="200" height="52" src="https://rapidapi.com/static-assets/default/dark-logo-78e48dc1-ca3f-4d67-a6f5-74032f439c8b.svg" />
+      <img width="200" height="52" src="https://rapidapi.com/uploads/blue_logo_f50bced105.svg" />
     </a>
   </p>
 </div>
